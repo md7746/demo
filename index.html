@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" rel="stylesheet">
+    <style>
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+
+<body style="overflow:hidden">
+    <button>aa</button>
+    <div class="none" style="height:200px;width:50%;background:rgb(42, 175, 1);margin-left: 25%;margin-top: 200px;">
+    </div>
+
+    <script>
+        var oBtn = document.querySelector('button');
+        var oDiv = document.querySelector('div');
+        oBtn.addEventListener('click', function () {
+            oDiv.style.display = "block"
+            // oDiv.classList.add('animated', 'zoomInDown')
+            animateCSS('div', 'bounceInRight', function () {
+                setTimeout(function () {
+                    animateCSS('div', 'bounceOutLeft', function () {
+                        oDiv.style.display = "none"
+                    })
+                },500)
+
+            })
+            //https://daneden.github.io/animate.css/
+        })
+        function animateCSS(element, animationName, callback) {
+            const node = document.querySelector(element)
+            node.classList.add('animated', animationName)
+
+            function handleAnimationEnd() {
+                node.classList.remove('animated', animationName)
+                node.removeEventListener('animationend', handleAnimationEnd)
+
+                if (typeof callback === 'function') callback()
+            }
+
+            node.addEventListener('animationend', handleAnimationEnd)
+        }
+    </script>
+</body>
+
+</html>
