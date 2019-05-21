@@ -1,76 +1,37 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width,user-scalable=no" name="viewport">
-    <meta http-equiv="content-Type" content="text/html" charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-siteapp">
-    <meta name="HandheldFriendly" content="true">
-    <title>@(prop title)</title>
-    <!-- 自定义注释
-        @(prop note);
-    -->
-    <link rel="stylesheet" type="text/css" href="http://resource.lewanduo.cn/style/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
-
 <body>
-    <div class="wrap">
-        <img alt="" src="images/1.gif">
-        <img alt="" src="images/2.gif">
-        <img alt="" src="images/3.png">
-        <img alt="" data-imgSrc="images/4.png">
-        <img alt="" data-imgSrc="images/5.png">
-        <img alt="" data-imgSrc="images/6.gif">
-        <img alt="" data-imgSrc="images/7.png">
-        <footer>@(prop company)</footer>
-    </div>
+    <form action="" name="myForm">
+        <input type="text" name="txt">
+    </form>
     <script>
-        window.onload = function () {
-            //视口高度
-            var viewportH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            loadImg()
-            document.addEventListener('scroll',loadImg);
-
-            function loadImg() {
-                document.querySelectorAll('[data-imgSrc]').forEach(function (item) {
-                    //整个网页高度
-                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-                    if (item.offsetTop <= scrollTop + viewportH) {
-                        item.setAttribute('src', item.getAttribute('data-imgSrc'))
-                    }
-                })
+        var oInput = document.forms['myForm'].elements[0];
+        oInput.addEventListener('focus',function(e){
+            if(e.target.style.backgroundColor != 'red'){
+                e.target.style.backgroundColor = 'yellow'
             }
-
-            var is_wechat = /micromessenger/i.test(navigator.userAgent);
-            document.addEventListener('click', function (e) {
-                document.querySelectorAll('.img-wrap span').forEach(function (item) {
-                    if (e.target == item) {
-                        if (is_wechat) {
-                            browserRedirect();
-                            return;
-                        }
-                        location.href = '@(prop download_url)';
-                    }
-                })
-            })
-            // 微信端提示
-            function browserRedirect() {
-                var oTip = null;
-                addWXTip();
-                function addWXTip() {
-                    oTip = document.createElement('div');
-                    oTip.innerHTML = '<div id="wxTip" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;z-index:40"><img src="http://resource.lewanduo.cn/images/wxTip.png" style="width:100%;display:block;"></div>';
-                    document.body.appendChild(oTip);
-                    document.querySelector('#wxTip').addEventListener('click', handle);
-                }
-
-                function handle() {
-                    document.querySelector('#wxTip').removeEventListener('click', handle);
-                    document.body.removeChild(oTip);
-                }
+            
+        });
+        oInput.addEventListener('blur',function(e){
+            if(/[^\d]/.test(e.target.value)){
+                e.target.style.backgroundColor = 'red'
+            }else{
+                e.target.style.backgroundColor = ''
             }
-        }
+        });
+        oInput.addEventListener('change',function(e){
+            if(/[^\d]/.test(e.target.value)){
+                e.target.style.backgroundColor = 'red'
+            }else{
+                e.target.style.backgroundColor = ''
+            }
+        })
     </script>
 </body>
-
 </html>
