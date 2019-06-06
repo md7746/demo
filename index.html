@@ -1,37 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" rel="stylesheet">
+    <style>
+        body,div{margin:0;padding: 0;}
+        body{overflow: hidden;}
+        
+        .top{z-index:99;position: fixed;top:0;left:0;width:100%;}
+        .top img{width:100%;}
+
+        .wrap{position: absolute;left: 0;top:0;width:100%;height:100%;transition: 1s;}
+        .wrap>div{width:100%;height:100%;overflow: hidden;position: relative;}
+        .wrap>div:nth-child(1){background:url(images/bg.jpg) no-repeat;background-size: 100% 100%;}
+        .wrap>div:nth-child(2){background:url(images/2.gif) no-repeat;background-size: 100% auto;}
+        .wrap>div:nth-child(3){background:url(images/3.jpg) no-repeat;background-size: 100% auto;}
+  
+
+        .con{}
+        .con img{width:100%;position: absolute;}
+        .con .btn{width:50%;;bottom:4%;left:50%;margin-left:-25%;}
+
+        .handle{position: fixed;z-index: 99;right: 16px;bottom:16px;}
+        .handle span{display: block;width:12px;height: 12px;background: #ccc;border-radius: 10px;margin:8px auto;}
+        .handle span.active{background: #fff;width:20px;height: 20px;}
+
+        #scroll{color:#999;font-size:30px;position: fixed;bottom: 0px;left: 50%;transform: rotate(90deg)!important;}
+    </style>
 </head>
+
 <body>
-    <form action="" name="myForm">
-        <input type="text" name="txt">
-    </form>
+    <div class="top"><img src="images/1.gif"></div>
+    <div class="wrap">
+        <div>
+            <span class="con">
+                <img src="images/main.png" style="bottom:12%;">
+                <img src="images/btn.png" class="btn delay-1s">
+            </span>
+        </div>
+        <div>
+            <span class="con">
+                    <img src="images/btn.png" class="btn">
+            </span>
+        </div>
+        <div>
+            <span class="con">
+                <img src="images/btn.png" class="btn">
+            </span>
+        </div>
+    </div>
+    <div class="handle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <!-- <span id="scroll" class="">&gt;</span>animated infinite fadeInDown -->
     <script>
-        var oInput = document.forms['myForm'].elements[0];
-        oInput.addEventListener('focus',function(e){
-            if(e.target.style.backgroundColor != 'red'){
-                e.target.style.backgroundColor = 'yellow'
+        window.onload = function () {
+            console.log(parseInt('30px'))
+            var viewportH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            document.body.style.height = viewportH + 'px';
+            var len = document.querySelector('.wrap').querySelectorAll('div').length;
+
+            var startY = 0,
+                moveEndY = 0,
+                dis = 0,
+                isRun = true;
+
+            document.addEventListener('touchstart', function (e) {
+                startY = e.touches[0].pageY;
+            });
+
+            document.addEventListener('touchmove', function (e) {
+                moveEndY = e.touches[0].pageY;
+                dis = moveEndY - startY;
+            });
+
+            document.addEventListener('touchend', function (e) {
+                if(isRun){
+                    isRun = false;
+                    var a = getEleT('.wrap');
+                    if (dis && dis < -30 && a>-(len-1)*viewportH) {
+                        document.querySelector('.wrap').style.top = a-viewportH + 'px';
+                    }
+                    if (dis && dis > 30 && a<0) {
+                        document.querySelector('.wrap').style.top = a+viewportH + 'px';
+                    }
+                    if(dis && (dis > 30 || dis < -30)){
+                        setTimeout(function(){
+                            showCon('bounceInUp');
+                        },1000)
+                    }
+                    isRun = true;
+                }
+                
+                dis = 0;//不滑动时重置dis,让touchend不会触发top的改变
+            });
+
+            function getEleT(ele){
+                var a = document.querySelector(ele).style.top;
+                a=a?a:0;
+                a = String(a).replace('px','');
+                return Number(a);
+            }
+
+            showCon('bounceInUp');
+
+            function showCon(animationName,callback){
+                document.querySelectorAll('.con').forEach(function(item){
+                    item.style.display = 'none'
+                });
+                var num = Math.abs(-getEleT('.wrap')/viewportH);
+
+                document.querySelector('.handle').querySelectorAll('span').forEach(function(item){
+                    item.classList.remove('active');
+                });
+                document.querySelector('.handle').querySelectorAll('span')[num].classList.add('active');
+
+                var curDiv = document.querySelector('.wrap').querySelectorAll('.con')[num];
+                curDiv.style.display = "block";
+                curDiv.querySelectorAll('img') && curDiv.querySelectorAll('img').forEach(function(item){
+                    animateCSS(item,animationName,callback);
+                })
+                
             }
             
-        });
-        oInput.addEventListener('blur',function(e){
-            if(/[^\d]/.test(e.target.value)){
-                e.target.style.backgroundColor = 'red'
-            }else{
-                e.target.style.backgroundColor = ''
+
+            function animateCSS(node, animationName, callback) {
+                node.classList.add('animated', animationName)
+                function handleAnimationEnd() {
+                    node.classList.remove('animated', animationName)
+                    node.removeEventListener('animationend', handleAnimationEnd)
+                    if (typeof callback === 'function') callback()
+                }
+                node.addEventListener('animationend', handleAnimationEnd)
             }
-        });
-        oInput.addEventListener('change',function(e){
-            if(/[^\d]/.test(e.target.value)){
-                e.target.style.backgroundColor = 'red'
-            }else{
-                e.target.style.backgroundColor = ''
-            }
-        })
+        }
     </script>
 </body>
+
 </html>
