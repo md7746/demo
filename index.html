@@ -1,146 +1,114 @@
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" rel="stylesheet">
-    <style>
-        body,div{margin:0;padding: 0;}
-        body{overflow: hidden;}
-        
-        .top{z-index:99;position: fixed;top:0;left:0;width:100%;}
-        .top img{width:100%;}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>勇者大陆</title>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
+<!--<link rel="stylesheet" href="/dist/css/swiper.min.css">
+<link rel="stylesheet" href="/dist/css/animate.min.css">
+<script src="/dist/js/swiper.min.js"></script>
+<script src="/dist/js/swiper.animate.min.js"></script>-->
 
-        .wrap{position: absolute;left: 0;top:0;width:100%;height:100%;transition: 1s;}
-        .wrap>div{width:100%;height:100%;overflow: hidden;position: relative;}
-        .wrap>div:nth-child(1){background:url(images/bg.jpg) no-repeat;background-size: 100% 100%;}
-        .wrap>div:nth-child(2){background:url(images/2.gif) no-repeat;background-size: 100% auto;}
-        .wrap>div:nth-child(3){background:url(images/3.jpg) no-repeat;background-size: 100% auto;}
-  
+<link rel="stylesheet" href="css/swiper.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<script src="js/swiper.min.js"></script>
+<script src="js/swiper.animate.min.js"></script>
 
-        .con{}
-        .con img{width:100%;position: absolute;}
-        .con .btn{width:50%;;bottom:4%;left:50%;margin-left:-25%;}
+<style>
+*{margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:"microsoft yahei";}
+img{ pointer-events: none; }
 
-        .handle{position: fixed;z-index: 99;right: 16px;bottom:16px;}
-        .handle span{display: block;width:12px;height: 12px;background: #ccc;border-radius: 10px;margin:8px auto;}
-        .handle span.active{background: #fff;width:20px;height: 20px;}
+.top{width:100%;position: fixed;top:0;left: 0;right: 0;z-index:99;}
+.top img{width:100%;}
 
-        #scroll{color:#999;font-size:30px;position: fixed;bottom: 0px;left: 50%;transform: rotate(90deg)!important;}
-    </style>
+.swiper-container {
+  /*  width: 320px;
+    height: 480px;*/
+	width: 100%;
+  height: 100%;
+	background:#fff;
+}  
+.swiper-slide{width:100%;height:100%;}
+.swiper-slide:nth-child(1){background:url(images/bg.jpg) no-repeat left top;background-size:100% 100%;}
+.swiper-slide:nth-child(2){background:url(images/2.gif) no-repeat left top;background-size:100% auto;}
+.swiper-slide:nth-child(3){background:url(images/3.jpg) no-repeat left top;background-size:100% auto;}
+.swiper-slide:nth-child(1) img:nth-child(1){visibility: visible!important;}
+img{
+	display:block;
+}
+.swiper-pagination-bullet {
+width: 6px;
+height: 6px;
+background: #fff;
+opacity: .4;
+}
+.swiper-pagination-bullet-active {
+opacity: 1;
+}
+@-webkit-keyframes tipmove{0%{bottom:10px;opacity:0}50%{bottom:15px;opacity:1}100%{bottom:20px;opacity:0}}
+.ani{
+	position:absolute;
+	}
+.txt{
+	position:absolute;
+}
+#array{
+	position:absolute;z-index:999;-webkit-animation: tipmove 1.5s infinite ease-in-out;
+}
+</style>
 </head>
 
 <body>
-    <div class="top"><img src="images/1.gif"></div>
-    <div class="wrap">
-        <div>
-            <span class="con">
-                <img src="images/main.png" style="bottom:12%;">
-                <img src="images/btn.png" class="btn delay-1s">
-            </span>
+<div class="top"><img src="images/1.gif"></div>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+    <!-------------slide1----------------->
+        <section class="swiper-slide">
+            <img src="images/main.png" class="ani resize" style="width:100%;left:0;top:50%">
+          <img src="images/btn.png" class="ani resize" style="width:50%;left:50%;bottom:6%;margin-left:-25%;" swiper-animate-effect="fadeInUp" swiper-animate-delay="0.1s">
+        </section>
+     <!---------------slide2-------------->
+        <section class="swiper-slide">
+          <img src="images/btn.png" class="ani resize" style="width:50%;left:50%;bottom:6%;margin-left:-25%;" swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s" swiper-animate-delay="0.1s">
+        </section>
+     <!----------------slide3-------------->
+        <section class="swiper-slide">
+          <img src="images/btn.png" class="ani resize" style="width:50%;left:50%;bottom:6%;margin-left:-25%;" swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s" swiper-animate-delay="0.1s">
         </div>
-        <div>
-            <span class="con">
-                    <img src="images/btn.png" class="btn">
-            </span>
-        </div>
-        <div>
-            <span class="con">
-                <img src="images/btn.png" class="btn">
-            </span>
-        </div>
-    </div>
-    <div class="handle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <!-- <span id="scroll" class="">&gt;</span>animated infinite fadeInDown -->
-    <script>
-        window.onload = function () {
-            console.log(parseInt('30px'))
-            var viewportH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            document.body.style.height = viewportH + 'px';
-            var len = document.querySelector('.wrap').querySelectorAll('div').length;
+    
+   <img src="images/web_swipe_tip.png" style="width:20px;height:15px; bottom:0; left:50%;margin-left:-10px;" id="array" class="resize"> 
+  <div class="swiper-pagination"></div>  
+</div>
 
-            var startY = 0,
-                moveEndY = 0,
-                dis = 0,
-                isRun = true;
 
-            document.addEventListener('touchstart', function (e) {
-                startY = e.touches[0].pageY;
-            });
-
-            document.addEventListener('touchmove', function (e) {
-                moveEndY = e.touches[0].pageY;
-                dis = moveEndY - startY;
-            });
-
-            document.addEventListener('touchend', function (e) {
-                if(isRun){
-                    isRun = false;
-                    var a = getEleT('.wrap');
-                    if (dis && dis < -30 && a>-(len-1)*viewportH) {
-                        document.querySelector('.wrap').style.top = a-viewportH + 'px';
-                    }
-                    if (dis && dis > 30 && a<0) {
-                        document.querySelector('.wrap').style.top = a+viewportH + 'px';
-                    }
-                    if(dis && (dis > 30 || dis < -30)){
-                        setTimeout(function(){
-                            showCon('bounceInUp');
-                        },1000)
-                    }
-                    isRun = true;
-                }
-                
-                dis = 0;//不滑动时重置dis,让touchend不会触发top的改变
-            });
-
-            function getEleT(ele){
-                var a = document.querySelector(ele).style.top;
-                a=a?a:0;
-                a = String(a).replace('px','');
-                return Number(a);
-            }
-
-            showCon('bounceInUp');
-
-            function showCon(animationName,callback){
-                document.querySelectorAll('.con').forEach(function(item){
-                    item.style.display = 'none'
-                });
-                var num = Math.abs(-getEleT('.wrap')/viewportH);
-
-                document.querySelector('.handle').querySelectorAll('span').forEach(function(item){
-                    item.classList.remove('active');
-                });
-                document.querySelector('.handle').querySelectorAll('span')[num].classList.add('active');
-
-                var curDiv = document.querySelector('.wrap').querySelectorAll('.con')[num];
-                curDiv.style.display = "block";
-                curDiv.querySelectorAll('img') && curDiv.querySelectorAll('img').forEach(function(item){
-                    animateCSS(item,animationName,callback);
-                })
-                
-            }
-            
-
-            function animateCSS(node, animationName, callback) {
-                node.classList.add('animated', animationName)
-                function handleAnimationEnd() {
-                    node.classList.remove('animated', animationName)
-                    node.removeEventListener('animationend', handleAnimationEnd)
-                    if (typeof callback === 'function') callback()
-                }
-                node.addEventListener('animationend', handleAnimationEnd)
-            }
-        }
-    </script>
+<script>
+  window.onload = function(){
+    var firImgH = document.querySelectorAll('img')[1].innerHeight || document.querySelectorAll('img')[1].clientHeight || document.querySelectorAll('img')[1].clientHeight;
+    document.querySelectorAll('img')[1].style.marginTop = -firImgH/2 + 'px';
+  }
+  var mySwiper = new Swiper ('.swiper-container', {
+    direction : 'vertical',
+    pagination: {
+	   el:'.swiper-pagination',
+    },
+    mousewheel: true,
+    on:{
+	  init: function(){
+        swiperAnimateCache(this);
+        swiperAnimate(this);
+        var firImgH = document.querySelectorAll('img')[1].innerHeight || document.querySelectorAll('img')[1].clientHeight || document.querySelectorAll('img')[1].clientHeight;
+    document.querySelectorAll('img')[1].style.marginTop = -firImgH/2 + 'px';
+ 	  },
+      slideChangeTransitionEnd: function(){
+  	    swiperAnimate(this);
+        var firImgH = document.querySelectorAll('img')[1].innerHeight || document.querySelectorAll('img')[1].clientHeight || document.querySelectorAll('img')[1].clientHeight;
+    document.querySelectorAll('img')[1].style.marginTop = -firImgH/2 + 'px';
+      }
+    }
+  })      
+  </script>
 </body>
-
 </html>
