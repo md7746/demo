@@ -1,47 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/css/swiper.min.css">
-  <style>
-    *{padding:0;margin:0;}
-    .swiper-container{position: relative;width:100%;height:300px;}
-    .bg{position: absolute;background-image:url(bg.jpg);width:200%;height:300px;left:-25%;top:0;background-size: 100% 100%;background-repeat: no-repeat;}
-    .swiper-slide{width:100%;height:300px;text-align: center;padding-top:30px;}
-  </style>
+    <meta charset="utf-8">
+    <meta content="width=device-width,user-scalable=no" name="viewport">
+    <meta http-equiv="content-Type" content="text/html" charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="HandheldFriendly" content="true">
+    <title>@(prop title)</title>
+    <!-- 自定义注释
+        @(prop note);
+    -->
+    <link rel="stylesheet" type="text/css" href="style/index.css">
 </head>
 
 <body>
-  <div class="swiper-container">
-    <div class="bg" data-swiper-parallax="-10%"
-      data-swiper-parallax-duration="1000"></div>
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <div data-swiper-parallax="-200" data-swiper-parallax-duration="1000">
-          <p>从右边200px开始进入</p>
-          <p>从右边200px开始进入</p>
-          <p>从右边200px开始进入</p>
+    <div class="wrap">
+        <div class="img-wrap" style="position:fixed;top:0;left:0;z-index:99;width:100%;">
+            <div style="margin:0 auto;max-width:720px;position: relative;">
+            <img alt="" src="images/1.gif">
+            <span style="width:28%;height: 46%;right:2%;top: 20%;"></span>
+            </div>
         </div>
-      </div>
-      <div class="swiper-slide">
-          <div data-swiper-parallax="-200" data-swiper-parallax-duration="1000">
-            <p>从右边200px开始进入</p>
-            <p>从右边200px开始进入</p>
-            <p>从右边200px开始进入</p>
-          </div>
+        <div id='secImgWrap'><img alt="" src="images/2.gif"></div>
+        <div class="img-wrap">
+            <img alt="" src="images/3.gif">
+            <span style="width: 46%;height: 60%;left: 24%;top: 20%;"></span>
         </div>
+        <div>
+            <img alt="" src="images/4.jpg">
+        </div>
+        <div>
+            <img data-imgSrc="images/5.gif">
+        </div>
+        <div class="img-wrap">
+            <img alt="" data-imgSrc="images/6.gif">
+            <span style="width: 44%;height: 50%;left: 26%;top: 20%;"></span>
+        </div>
+        <footer>@(prop company)</footer>
     </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.6/js/swiper.min.js"></script>
-  <script language="javascript">
-    var mySwiper = new Swiper('.swiper-container', {
-      parallax: true,
-    })
-  </script>
+    <script>
+        window.onload = function () {
+            //视口高度
+            var viewportH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            
+            var firImgH = document.querySelectorAll('img')[0].innerHeight || document.querySelectorAll('img')[0].clientHeight || document.querySelectorAll('img')[0].clientHeight;
+            document.querySelector('#secImgWrap').style.marginTop = firImgH + 'px';
+    
+            loadImg()
+            document.addEventListener('scroll',loadImg);
+
+            function loadImg() {
+                document.querySelectorAll('[data-imgSrc]').forEach(function (item) {
+                    //整个网页高度
+                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                    if (item.parentElement.offsetTop <= scrollTop + viewportH) {
+                        item.setAttribute('src', item.getAttribute('data-imgSrc'))
+                    }
+                })
+            }
+
+            var is_wechat = /micromessenger/i.test(navigator.userAgent);
+            document.addEventListener('click', function (e) {
+                document.querySelectorAll('.img-wrap span').forEach(function (item) {
+                    if (e.target == item) {
+                        if (is_wechat) {
+                            browserRedirect();
+                            return;
+                        }
+                        location.href = '@(prop download_url)';
+                    }
+                })
+            })
+            // 微信端提示
+            function browserRedirect() {
+                var oTip = null;
+                addWXTip();
+                function addWXTip() {
+                    oTip = document.createElement('div');
+                    oTip.innerHTML = '<div id="wxTip" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;z-index:40"><img src="images/wxTip.png" style="width:100%;display:block;"></div>';
+                    document.body.appendChild(oTip);
+                    document.querySelector('#wxTip').addEventListener('click', handle);
+                }
+
+                function handle() {
+                    document.querySelector('#wxTip').removeEventListener('click', handle);
+                    document.body.removeChild(oTip);
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>
