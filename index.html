@@ -14,6 +14,8 @@
 
     .top img{width:100%;position: fixed;z-index: 99;}
 
+    .swiper-wrapper{transition-delay:.4s;}
+    .swiper-slide{overflow: hidden;position: relative;}
     .swiper-slide,.swiper-lazy{width:100%;height:100%;}
     .swiper-lazy{background-size:100% auto;}
 
@@ -21,6 +23,12 @@
     .swiper-pagination-bullet{-webkit-opacity:.3;opacity:.3;background:#fff}.swiper-pagination-bullet-active{opacity:1;opacity:1;background:#fff}
 
     .bottom img{width:100%;position: fixed;z-index: 99;bottom:0;}
+
+    .from-left,.from-right{transition:all .4s;-webkit-transition:all .4s;transition-timing-function:cubic-bezier(0.5,-0.58,0.5,1.6);-webkit-transition-timing-function:cubic-bezier(0.5,-0.58,0.5,1.6);opacity:0;}
+    .from-left{width:80px;height:80px;background:#ddd;position:absolute;top:180px;left:0px;}
+    .from-right{width:80px;height:80px;background:#ddd;position:absolute;top:180px;right:0px;}
+    .cur-active .from-left{left:100px;opacity:1;}
+    .cur-active .from-right{right:100px;opacity:1;}
   </style>
 </head>
 
@@ -31,16 +39,22 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div style="background:url(img/bg1.jpg)" class="swiper-lazy">
+                        <div class="from-left"></div>
+                        <div class="from-right"></div>
                         <div class="swiper-lazy-preloader"></div>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div data-background="img/bg2.jpg" class="swiper-lazy">
+                        <div class="from-left"></div>
+                        <div class="from-right"></div>
                         <div class="swiper-lazy-preloader"></div>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div data-background="img/bg3.jpg" class="swiper-lazy">
+                        <div class="from-left"></div>
+                        <div class="from-right"></div>
                         <div class="swiper-lazy-preloader"></div>
                     </div>
                 </div>
@@ -57,14 +71,34 @@
         var wrapW = viewportW>750?'750px':viewportW + 'px';
         document.querySelector('.bottom img').style.width = document.querySelector('.top img').style.width = document.querySelector('.wrap').style.width = wrapW;
         var mySwiper = new Swiper('.swiper-container', {
-            autoplay: false,
+            followFinger:false,
+            direction : 'vertical',
+            loop:false,
+            autoplay:false,
+            speed:600,
             pagination: {
                 el: '.swiper-pagination',
             },
             lazy: {
                 loadPrevNext: true,
-            }
-        })
+            },
+            on:{
+                    init:function(swiper){
+                        slide=this.slides.eq(0);
+                        slide.addClass('cur-active');
+                    },
+                    transitionStart: function(){
+                        for(i=0;i<this.slides.length;i++){
+                            slide=this.slides.eq(i);
+                            slide.removeClass('cur-active');
+                        }
+                    },
+                    transitionEnd: function(){
+                        slide=this.slides.eq(this.activeIndex);
+                        slide.addClass('cur-active');                    
+                    }
+                }
+        });
     </script>
 </body>
 
