@@ -1,134 +1,33 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="author" content="tkylin">
-    <meta content="width=device-width,user-scalable=no" name="viewport">
-    <meta http-equiv="content-Type" content="text/html" charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-siteapp">
-    <meta name="HandheldFriendly" content="true">
-    <meta http-equiv="x-rim-auto-match" content="none">
-    <title>@(prop title)</title>
-    <!-- 自定义注释
-        @(prop note);
-    -->
-    <link rel="stylesheet" type="text/css" href="http://resource.lewanduo.cn/style/hasswiper.css">
-    <style type="text/css">
-        .swiper-container {margin: 0.5rem 0;height: 6.5rem;}
-        .swiper-slide {background-repeat: no-repeat;background-size: 100% 100%;width: 3.5rem;height: 6.5rem;border-radius: 0.1rem;
-        }
-        .swiper-slide-shadow-left，.swiper-slide-shadow-right{display: none;}
-        .bottom{position:fixed;bottom:-1rem;width:100%;height:.8rem;line-height:.8rem;color:#fff;text-align: center;background: #fe4e4e;max-width:640px;border-top-right-radius:8px;border-top-left-radius:8px;-webkit-border-top-right-radius:8px;-webkit-border-top-left-radius:8px;font-size:.26rem;
-        transition:all .3s;-webkit-transition:all .3s;}
-        .posb{bottom:0;}
-        footer{padding-bottom: 1rem;}
-    </style>
+  <meta charset="UTF-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+  <style>
+    *{padding:0;margin:0;}
+    .swiper-slide{height:300px;width:80% !important;margin-right:10px;}
+  </style>
 </head>
 
-
-<body style=" cursor:pointer;">
-    <!-- /container -->
-    <div class="container" style="max-width:640px;margin:0 auto; position: relative;">
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" style="background-image:url(images/4.jpg);"></div>
-                <div class="swiper-slide" style="background-image: url(images/5.jpg);"></div>
-                <div class="swiper-slide" style="background-image: url(images/1.gif);"></div>
-                <div class="swiper-slide" style="background-image: url(images/2.jpg);"></div>
-                <div class="swiper-slide" style="background-image: url(images/3.jpg);"></div>
-            </div>
-        </div>
-
-        <div style="margin: 0 auto;text-align: center;">
-                <a href="@(prop download_url)"><img style="width:100%;" src="images/6.jpg"></a>
-            <img style="width:100%;" src="images/7.jpg">
-            <img style="width:100%;" src="images/8.jpg">
-            <img style="width:100%;" src="images/9.jpg">
-            <img style="width:100%;" src="images/10.jpg">
-        </div>
-
-        <a href="@(prop download_url)"><div class="bottom">下载游戏-100倍经验</div></a>
+<body>
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" style='background:#aaa;'>slider1</div>
+      <div class="swiper-slide" style='background:#bbb;'>slider2</div>
+      <div class="swiper-slide" style='background:#ccc;'>slider3</div>
     </div>
-    <!-- /container -->
-
-
-    <footer class="footer">@(prop company)</footer>
-
-    <script>
-        //自适应代码
-        function rePosition() {
-            var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            var ratio = width / 640;
-            if (width <= 640) {
-                document.getElementsByTagName('html')[0].style.fontSize = 100 * ratio + "px";
-            } else {
-                document.getElementsByTagName('html')[0].style.fontSize = "100px";
-            }
-        }
-        rePosition();
-        window.onresize = function () {
-            rePosition();
-        }
-    </script>
-    <!-- 打包文件：jq、swiper、主程序 -->
-    <script src="http://resource.lewanduo.cn/js/swiper.min.js"></script>
-    <script>
-        var viewportH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-        function download() {
-            location.href = '@(prop download_url)';
-        }
-        function getScrollTop() {
-            var scroll_top = 0;
-            if (document.documentElement && document.documentElement.scrollTop){
-                scroll_top = document.documentElement.scrollTop;
-            } else if (document.body) { 
-                scroll_top = document.body.scrollTop;
-            }
-            return scroll_top; 
-        }
-        
-        var eleBottom = document.querySelector('.bottom');
-        window.addEventListener("scroll",function(){
-            showBottom()
-        });
-        showBottom()
-        function showBottom(){
-            if(getScrollTop()>0.6*viewportH){
-                eleBottom.classList.add('posb');
-            }else{
-                eleBottom.classList.remove('posb');
-            }
-        }
-    </script>
-    <script>
-        window.onload = function () {
-            var swiper = new Swiper('.swiper-container', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                initialSlide: 2,
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false
-                },
-                autoplayDisableOnInteraction: false,
-                coverflowEffect: {
-                    rotate: 50,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 1,
-                    slideShadows: true,
-                },
-                lazy: {
-                    loadPrevNext: true,
-                }
-            });
-        };
-    </script>
-    <!-- <script>
-        eval("@(prop js)");
-    </script> -->
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+  <script>
+    var mySwiper = new Swiper('.swiper-container', {
+        loop:true,
+        slidesPerView:'auto'
+    })
+  </script>
 </body>
+
 </html>
